@@ -164,3 +164,26 @@ Vec4 multiplyMatrixWithVec4(Matrix4 m, Vec4 v)
 
     return Vec4(values[0], values[1], values[2], values[3], v.colorId);
 }
+
+int findOrtonormalBasis(Vec3 b, Vec3 &u, Vec3 &w, Vec3 &v) {
+    double minvec = fmin(ABS(b.x), fmin(ABS(b.y), ABS(b.z)));
+
+    if (minvec == ABS(b.x)) {
+        v = Vec3(0, -b.z, b.y);
+    }
+    else if (minvec == ABS(b.y)) {
+        v = Vec3(-b.z, 0, b.x);
+    }
+    else {
+        v = Vec3(-b.y, b.x, 0);
+    }
+
+    u = Vec3(b.x, b.y, b.z);
+
+    w = crossProductVec3(u, v);
+    v = normalizeVec3(v);
+    w = normalizeVec3(w);
+
+    return 1;
+
+}
