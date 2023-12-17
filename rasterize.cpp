@@ -71,6 +71,7 @@ void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> 
     double xMax = max(v0.x, max(v1.x, v2.x));
     double yMin = min(v0.y, min(v1.y, v2.y));
     double yMax = max(v0.y, max(v1.y, v2.y));
+    
 
     
 
