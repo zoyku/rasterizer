@@ -63,17 +63,56 @@ void lineRasterization(Vec4 first, Vec4 second, Color c0, Color c1, vector<vecto
 
 }
 
-void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> &depth, Vec3 v0, Vec3 v1, Vec3 v2, Color c0, Color c1, Color c2) {
+void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> &depth, Vec3 v0, Vec3 v1, Vec3 v2, Color c0, Color c1, Color c2, int horRes, int verRes) {
     /*
         Barycentric coordinate method from slides
     */
-    double xMin = min(v0.x, min(v1.x, v2.x));
-    double xMax = max(v0.x, max(v1.x, v2.x));
-    double yMin = min(v0.y, min(v1.y, v2.y));
-    double yMax = max(v0.y, max(v1.y, v2.y));
+    int xMin = min(v0.x, min(v1.x, v2.x));
+    int xMax = max(v0.x, max(v1.x, v2.x));
+    int yMin = min(v0.y, min(v1.y, v2.y));
+    int yMax = max(v0.y, max(v1.y, v2.y));
+
+    double alpha;
+    double beta;
+    double gamma;
+
+    Color color;
     
+    if(xMin < 0){
+        xMin = 0;
+    }
+    if(xMax >= horRes ){
+        xMax = horRes;
+    }
 
-    
+    if(yMin < 0){
+        yMin = 0;
+    }
+    if(yMax >= verRes ){
+        yMax = verRes;
+    }
 
+    double f12 = (v0.x * (v1.y - v2.y)) + (v0.y * (v2.x - v1.x)) + (v1.x * v2.y) - (v1.y * v2.x);
+    double f20 = (v1.x * (v2.y - v0.y)) + (v1.y * (v0.x - v2.x)) + (v2.x * v0.y) - (v2.x * v0.x);
+    double f01 = (v2.x * (v0.y - v1.y)) + (v2.y * (v1.x - v0.x)) + (v0.x * v1.y) - (v0.y * v1.x);
 
+    for(int y=yMin; y<=yMax; ++y){
+        for(int x=xMin; x<=xMax; ++x){
+            alpha = (x * (v1.y - v2.y)) + (y * (v2.x - v1.x)) + (v1.x * v2.y) - (v1.y * v2.x) / f12;
+            beta = (x * (v2.y - v0.x)) + (y * (v0.x - v2.x)) + (v2.x * v0.y) - (v2.y * v0.x) / f20;
+            gamma = (x * (v0.y - v1.y)) + (y * (v1.x - v0.x)) + (v0.x * v1.y) - (v0.y * v2.x) / f01;
+
+            if(alpha>=0 && beta>=0 && gamma>=0){
+                double zValue = (v0.z * alpha) + (v1.z * beta) + (v2.z * gamma);
+
+                if (zValue < depth[x][y]){
+                    color = Color(ROUND((c0.r) * alpha + (c1.r) * beta + (c2.r) * gamma),
+                            ROUND((c0.g) * alpha + (c1.g) * beta + (c2.g) * gamma),
+                            ROUND((c0.b) * alpha + (c1.b) * beta + (c2.b) * gamma));
+                    image[x][y] = color;
+                    depth[x][y] = zValue;
+                } 
+            }
+        }
+    }
 }
