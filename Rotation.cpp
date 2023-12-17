@@ -65,6 +65,10 @@ Matrix4 Rotation::calculateMatrix()
         {0.0, 0.0, 0.0, 1.0}
     };
 
+    /*
+    method taken as-is from the slides
+    */
+
     result = multiplyMatrixWithMatrix(result, Matrix4(rotation));
 
     return Matrix4(result);
