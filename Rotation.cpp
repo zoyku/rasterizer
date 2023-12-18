@@ -49,15 +49,6 @@ Matrix4 Rotation::calculateMatrix()
 
     Matrix4 result = Matrix4(matrix);
 
-    double transpose[4][4] = {
-        {u.x, v.x, w.x, 0.0},
-        {u.y, v.y, w.y, 0.0},
-        {u.z, v.z, w.z, 0.0},
-        {0.0, 0.0, 0.0, 1.0}
-    };
-
-    result = multiplyMatrixWithMatrix(result, Matrix4(transpose));
-
     double angle = this->angle * M_PI / 180.0;
 
     double rotation[4][4] = {
@@ -66,12 +57,25 @@ Matrix4 Rotation::calculateMatrix()
         {0.0, sin(angle), cos(angle), 0.0},
         {0.0, 0.0, 0.0, 1.0}
     };
+    result = multiplyMatrixWithMatrix(Matrix4(rotation), result);
+
+
+    double transpose[4][4] = {
+        {u.x, v.x, w.x, 0.0},
+        {u.y, v.y, w.y, 0.0},
+        {u.z, v.z, w.z, 0.0},
+        {0.0, 0.0, 0.0, 1.0}
+    };
+    result = multiplyMatrixWithMatrix(Matrix4(transpose), result);
+
+
+
 
     /*
     method taken as-is from the slides
     */
 
-    result = multiplyMatrixWithMatrix(result, Matrix4(rotation));
 
-    return Matrix4(result);
+
+    return result;
 }

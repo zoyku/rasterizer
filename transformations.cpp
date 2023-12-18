@@ -12,19 +12,19 @@ Matrix4 calculateModelingTransformation(Mesh* mesh, std::vector<Translation*> tr
         {
             Translation* translation = translations[mesh->transformationIds[i]-1];
             Matrix4 m = translation->calculateMatrix();
-            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,m);
+            modelingTransformation = multiplyMatrixWithMatrix(m, modelingTransformation);
         }
         else if (mesh->transformationTypes[i] == 's')
         {
             Scaling* scaling = scalings[mesh->transformationIds[i]-1];
             Matrix4 m = scaling->calculateMatrix();
-            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,m);
+            modelingTransformation = multiplyMatrixWithMatrix(m, modelingTransformation);
         }
         else if (mesh->transformationTypes[i] == 'r')
         {
             Rotation* rotation = rotations[mesh->transformationIds[i]-1];
             Matrix4 m = rotation->calculateMatrix();
-            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,m);
+            modelingTransformation = multiplyMatrixWithMatrix(m, modelingTransformation);
         }
     }
     return modelingTransformation;
@@ -70,7 +70,7 @@ Matrix4 calculatePerspectiveTransformation(Camera* camera) {
 
     Matrix4 perspectiveToOrtho = Matrix4(p2o);
 
-    Matrix4 result = multiplyMatrixWithMatrix(ortho, perspectiveToOrtho);
+    Matrix4 result = multiplyMatrixWithMatrix(perspectiveToOrtho, ortho);
     
     return result; 
     

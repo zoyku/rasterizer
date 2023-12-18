@@ -104,13 +104,13 @@ void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> 
             if(alpha>=0 && beta>=0 && gamma>=0){
                 double zValue = (v0.z * alpha) + (v1.z * beta) + (v2.z * gamma);
 
-                // if (zValue < depth[x][y]){
+                if (zValue < depth[x][y]){
                     color = Color(ROUND((c0.r) * alpha + (c1.r) * beta + (c2.r) * gamma),
                             ROUND((c0.g) * alpha + (c1.g) * beta + (c2.g) * gamma),
                             ROUND((c0.b) * alpha + (c1.b) * beta + (c2.b) * gamma));
                     image[x][y] = color;
                     depth[x][y] = zValue;
-                // } 
+                } 
             }
         }
     }
