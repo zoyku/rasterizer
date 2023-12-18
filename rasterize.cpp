@@ -29,7 +29,7 @@ void lineRasterization(Vec4 first, Vec4 second, Color c0, Color c1, vector<vecto
         int y = first.y;
         for (int x = first.x; x <= second.x; x++) {
             image[x][y] = c;
-            if (d > 0) {
+            if (d * increment < 0) {
                 y += increment;
                 d += (second.x - first.x) * increment;
             }
@@ -51,9 +51,9 @@ void lineRasterization(Vec4 first, Vec4 second, Color c0, Color c1, vector<vecto
         int x = first.x;
         for (int y = first.y; y <= second.y; y++) {
             image[x][y] = c;
-            if (d > 0) {
+            if (d * increment > 0) {
                 x += increment;
-                d += (second.y - first.y) * increment;
+                d += (first.y - second.y) * increment;
             }
             d += second.x - first.x;
             c = Color(c.r + dc.r, c.g + dc.g, c.b + dc.b);

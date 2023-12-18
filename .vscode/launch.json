@@ -6,7 +6,7 @@
         "type": "cppdbg",
         "request": "launch",
         "program": "${fileDirname}/rasterizer",
-        "args": ["./culling_disabled_inputs/flag_germany.xml",],
+        "args": ["./culling_disabled_inputs/empty_box.xml",],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",
         "environment": [],
