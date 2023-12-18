@@ -357,7 +357,7 @@ void Scene::forwardRenderingPipeline(Camera *camera)
 {
 	Matrix4 cameraMatrix = calculateCameraTransformation(camera);
 	Matrix4 viewingTransformation = calculateViewingTransformation(camera);
-	Matrix4 viewPortTransformation = calculateViewportTransformation(camera);
+	Matrix4 viewportTransformation = calculateViewportTransformation(camera);
 
 
 	for (int i = 0; i < this->meshes.size(); i++) {
@@ -392,30 +392,30 @@ void Scene::forwardRenderingPipeline(Camera *camera)
 			Vec4 v0_2 = v0;
 
 			if (mesh->type == 0) {
-				int line1 = liangClip(v0_0, v1_0, *(this->colorsOfVertices[v0.colorId-1]), *(this->colorsOfVertices[v1.colorId-1]));
-				int line2 = liangClip(v1_1, v2_1, *(this->colorsOfVertices[v1.colorId-1]), *(this->colorsOfVertices[v2.colorId-1]));
-				int line3 = liangClip(v2_2, v0_2, *(this->colorsOfVertices[v2.colorId-1]), *(this->colorsOfVertices[v0.colorId-1]));
+				int line0 = liangClip(v0_0, v1_0, *(this->colorsOfVertices[v0.colorId-1]), *(this->colorsOfVertices[v1.colorId-1]));
+				int line1 = liangClip(v1_1, v2_1, *(this->colorsOfVertices[v1.colorId-1]), *(this->colorsOfVertices[v2.colorId-1]));
+				int line2 = liangClip(v2_2, v0_2, *(this->colorsOfVertices[v2.colorId-1]), *(this->colorsOfVertices[v0.colorId-1]));
 
-				if (line1) {
-					v0 = multiplyMatrixWithVec4(viewPortTransformation, v0_0);
-					v1 = multiplyMatrixWithVec4(viewPortTransformation, v1_0);
+				if (line0) {
+					v0 = multiplyMatrixWithVec4(viewportTransformation, v0_0);
+					v1 = multiplyMatrixWithVec4(viewportTransformation, v1_0);
 					lineRasterization(v0, v1, *this->colorsOfVertices[v0.colorId-1], *this->colorsOfVertices[v1.colorId-1], this->image);
 				}
-				if (line2) {
-					v1 = multiplyMatrixWithVec4(viewPortTransformation, v1_1);
-					v2 = multiplyMatrixWithVec4(viewPortTransformation, v2_1);
+				if (line1) {
+					v1 = multiplyMatrixWithVec4(viewportTransformation, v1_1);
+					v2 = multiplyMatrixWithVec4(viewportTransformation, v2_1);
 					lineRasterization(v1, v2, *this->colorsOfVertices[v1.colorId-1], *this->colorsOfVertices[v2.colorId-1], this->image);
 				}
-				if (line3) {
-					v2 = multiplyMatrixWithVec4(viewPortTransformation, v2_2);
-					v0 = multiplyMatrixWithVec4(viewPortTransformation, v0_2);
+				if (line2) {
+					v2 = multiplyMatrixWithVec4(viewportTransformation, v2_2);
+					v0 = multiplyMatrixWithVec4(viewportTransformation, v0_2);
 					lineRasterization(v2, v0, *this->colorsOfVertices[v2.colorId-1], *this->colorsOfVertices[v0.colorId-1], this->image);
 				}
 			}
 			else {
-				v0 = multiplyMatrixWithVec4(viewPortTransformation, v0);
-				v1 = multiplyMatrixWithVec4(viewPortTransformation, v1);
-				v2 = multiplyMatrixWithVec4(viewPortTransformation, v2);
+				v0 = multiplyMatrixWithVec4(viewportTransformation, v0);
+				v1 = multiplyMatrixWithVec4(viewportTransformation, v1);
+				v2 = multiplyMatrixWithVec4(viewportTransformation, v2);
 				triangleRasterization(this->image, this->depth, v0, v1, v2, *this->colorsOfVertices[v0.colorId-1], *this->colorsOfVertices[v1.colorId-1], *this->colorsOfVertices[v2.colorId-1], camera->horRes, camera->verRes);
 
 			}
