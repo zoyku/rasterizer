@@ -2,6 +2,9 @@
 #define __SCALING_H__
 
 #include "Matrix4.h"
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 
 class Scaling
 {

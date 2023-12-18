@@ -8,12 +8,11 @@
 #define ROUND(a) ((int) (a + 0.5))
 
 #include "rasterize.h"
-#include <vector>
-using namespace std;
 
-void lineRasterization(Vec4 first, Vec4 second, Color c0, Color c1, vector<vector<Color>> & image) {
+
+void lineRasterization(Vec4 first, Vec4 second, Color c0, Color c1, vector<vector<Color>>& image) {
     int d, increment = 1;
-    double m = ABS((second.y - first.y) / (second.x - first.x));
+    double m = abs((second.y - first.y) / (second.x - first.x));
     Color c,dc;
     
     if(m <= 1) {
@@ -63,7 +62,7 @@ void lineRasterization(Vec4 first, Vec4 second, Color c0, Color c1, vector<vecto
 
 }
 
-void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> &depth, Vec3 v0, Vec3 v1, Vec3 v2, Color c0, Color c1, Color c2, int horRes, int verRes) {
+void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> &depth, Vec4 v0, Vec4 v1, Vec4 v2, Color c0, Color c1, Color c2, int horRes, int verRes) {
     /*
         Barycentric coordinate method from slides
     */
@@ -82,14 +81,14 @@ void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> 
         xMin = 0;
     }
     if(xMax >= horRes ){
-        xMax = horRes;
+        xMax = horRes-1;
     }
 
     if(yMin < 0){
         yMin = 0;
     }
     if(yMax >= verRes ){
-        yMax = verRes;
+        yMax = verRes-1;
     }
 
     double f12 = (v0.x * (v1.y - v2.y)) + (v0.y * (v2.x - v1.x)) + (v1.x * v2.y) - (v1.y * v2.x);
@@ -105,13 +104,13 @@ void triangleRasterization(vector<vector<Color>> &image, vector<vector<double>> 
             if(alpha>=0 && beta>=0 && gamma>=0){
                 double zValue = (v0.z * alpha) + (v1.z * beta) + (v2.z * gamma);
 
-                if (zValue < depth[x][y]){
+                // if (zValue < depth[x][y]){
                     color = Color(ROUND((c0.r) * alpha + (c1.r) * beta + (c2.r) * gamma),
                             ROUND((c0.g) * alpha + (c1.g) * beta + (c2.g) * gamma),
                             ROUND((c0.b) * alpha + (c1.b) * beta + (c2.b) * gamma));
                     image[x][y] = color;
                     depth[x][y] = zValue;
-                } 
+                // } 
             }
         }
     }

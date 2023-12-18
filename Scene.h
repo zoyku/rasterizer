@@ -9,6 +9,11 @@
 #include "Camera.h"
 #include "Mesh.h"
 
+#include <vector>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 class Scene
 {
 public:

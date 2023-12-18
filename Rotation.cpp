@@ -27,6 +27,8 @@ std::ostream &operator<<(std::ostream &os, const Rotation &r)
     return os;
 }
 
+
+
 Matrix4 Rotation::calculateMatrix()
 {
     /*
@@ -36,7 +38,7 @@ Matrix4 Rotation::calculateMatrix()
 
     Vec3 u,w,v;
 
-    findOrhonormalBasis(b, u, w, v);
+    findOrtonormalBasis(b, u, w, v);
 
     double matrix[4][4] = {
         {u.x, u.y, u.z, 0.0},

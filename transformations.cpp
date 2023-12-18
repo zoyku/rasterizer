@@ -10,15 +10,21 @@ Matrix4 calculateModelingTransformation(Mesh* mesh, std::vector<Translation*> tr
     {
         if (mesh->transformationTypes[i] == 't')
         {
-            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,translations[mesh->transformationIds[i]]->matrix);
+            Translation* translation = translations[mesh->transformationIds[i]-1];
+            Matrix4 m = translation->calculateMatrix();
+            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,m);
         }
         else if (mesh->transformationTypes[i] == 's')
         {
-            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,scalings[mesh->transformationIds[i]]->matrix);
+            Scaling* scaling = scalings[mesh->transformationIds[i]-1];
+            Matrix4 m = scaling->calculateMatrix();
+            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,m);
         }
         else if (mesh->transformationTypes[i] == 'r')
         {
-            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,rotations[mesh->transformationIds[i]]->matrix);
+            Rotation* rotation = rotations[mesh->transformationIds[i]-1];
+            Matrix4 m = rotation->calculateMatrix();
+            modelingTransformation = multiplyMatrixWithMatrix(modelingTransformation,m);
         }
     }
     return modelingTransformation;
@@ -84,10 +90,9 @@ Matrix4 calculateViewportTransformation(Camera* camera){
 Matrix4 calculateViewingTransformation(Camera* camera){
     Matrix4 cameraTransformation = calculateCameraTransformation(camera);
     Matrix4 orthographicTransformation = calculateOrthographicTransformation(camera);
-    Matrix4 viewportTransformation = calculateViewportTransformation(camera);
     if (camera->projectionType == 1)
-        return multiplyMatrixWithMatrix(viewportTransformation, multiplyMatrixWithMatrix(orthographicTransformation, cameraTransformation));
+        return multiplyMatrixWithMatrix(orthographicTransformation, cameraTransformation);
 
     Matrix4 perspectiveTransformation = calculatePerspectiveTransformation(camera);
-    return multiplyMatrixWithMatrix(viewportTransformation, multiplyMatrixWithMatrix(perspectiveTransformation, cameraTransformation));
+    return multiplyMatrixWithMatrix(perspectiveTransformation, cameraTransformation);
 }

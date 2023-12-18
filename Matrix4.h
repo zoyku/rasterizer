@@ -1,6 +1,11 @@
 #ifndef __MATRIX4_H__
 #define __MATRIX4_H__
 
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <vector>
+
 class Matrix4
 {
 public:

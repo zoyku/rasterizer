@@ -1,6 +1,10 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+
 class Color
 {
 public:

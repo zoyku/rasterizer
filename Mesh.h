@@ -4,6 +4,9 @@
 #define SOLID_MESH 1
 #include "Triangle.h"
 
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 class Mesh
 {
 

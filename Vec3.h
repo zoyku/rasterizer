@@ -2,6 +2,10 @@
 #define __VEC3_H__
 #define NO_COLOR -1
 
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+
 class Vec3
 {
 public:

@@ -166,12 +166,12 @@ Vec4 multiplyMatrixWithVec4(Matrix4 m, Vec4 v)
 }
 
 int findOrtonormalBasis(Vec3 b, Vec3 &u, Vec3 &w, Vec3 &v) {
-    double minvec = fmin(ABS(b.x), fmin(ABS(b.y), ABS(b.z)));
+    double minvec = fmin(abs(b.x), fmin(abs(b.y), abs(b.z)));
 
-    if (minvec == ABS(b.x)) {
+    if (minvec == abs(b.x)) {
         v = Vec3(0, -b.z, b.y);
     }
-    else if (minvec == ABS(b.y)) {
+    else if (minvec == abs(b.y)) {
         v = Vec3(-b.z, 0, b.x);
     }
     else {
