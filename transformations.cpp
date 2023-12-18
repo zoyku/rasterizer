@@ -31,14 +31,15 @@ Matrix4 calculateModelingTransformation(Mesh* mesh, std::vector<Translation*> tr
 }
 
 Matrix4 calculateCameraTransformation(Camera* camera){
-    double matrix[4][4] = {
-        {camera->u.x, camera->u.y, camera->u.z, -1.0 * dotProductVec3(camera->u, camera->position)},
-        {camera->v.x, camera->v.y, camera->v.z, -1.0 * dotProductVec3(camera->v, camera->position)},
-        {camera->w.x, camera->w.y, camera->w.z, -1.0 * dotProductVec3(camera->w, camera->position)},
-        {0.0, 0.0, 0.0, 1.0}
-    };
-
-    return Matrix4(matrix);
+     double translate[4][4] = {{1, 0, 0, -(camera->position.x)},
+                        {0, 1, 0, -(camera->position.y)},
+                        {0, 0, 1, -(camera->position.z)},
+                        {0, 0, 0, 1}};
+    double rotate[4][4] = {{camera->u.x, camera->u.y, camera->u.z, 0},
+                      {camera->v.x, camera->v.y, camera->v.z, 0},
+                      {camera->w.x, camera->w.y, camera->w.z, 0},
+                      {0, 0, 0, 1}};
+    return multiplyMatrixWithMatrix(rotate, translate);
 }
 
 Matrix4 calculateOrthographicTransformation(Camera* camera){
@@ -56,7 +57,7 @@ Matrix4 calculateOrthographicTransformation(Camera* camera){
 Matrix4 calculatePerspectiveTransformation(Camera* camera) {
 
     /*
-    calculate p2o, then multiply to get Mper
+    calculate p2o, then multiply to get Mper, write the result matrix directly
     */
 
    Matrix4 ortho = calculateOrthographicTransformation(camera);
@@ -88,11 +89,9 @@ Matrix4 calculateViewportTransformation(Camera* camera){
 }
 
 Matrix4 calculateViewingTransformation(Camera* camera){
-    Matrix4 cameraTransformation = calculateCameraTransformation(camera);
-    Matrix4 orthographicTransformation = calculateOrthographicTransformation(camera);
-    if (camera->projectionType == 1)
-        return multiplyMatrixWithMatrix(orthographicTransformation, cameraTransformation);
+    if (camera->projectionType == 0)
+        return calculateOrthographicTransformation(camera);
 
-    Matrix4 perspectiveTransformation = calculatePerspectiveTransformation(camera);
-    return multiplyMatrixWithMatrix(perspectiveTransformation, cameraTransformation);
+    else 
+        return calculatePerspectiveTransformation(camera);
 }
