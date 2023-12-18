@@ -61,11 +61,11 @@ void lineRasterization(Vec4 first, Vec4 second, Color c0, Color c1, vector<vecto
         for (int y = first.y; y <= second.y; y++) {
             image[x][y] = Color(ROUND(color.r), ROUND(color.g), ROUND(color.b));
 
-            middle += (second.x - first.x);
+            middle += (first.x - second.x);
 
-            if (middle * increment > 0) {
+            if ((middle * increment) < 0) {
                 x += increment;
-                middle += (increment * (first.y - second.y));
+                middle += (increment * (second.y - first.y));
             }
 
             color = Color(color.r + middleColor.r, color.g + middleColor.g, color.b + middleColor.b);

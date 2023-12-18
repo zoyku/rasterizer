@@ -46,9 +46,9 @@ Matrix4 calculateCameraTransformation(Camera* camera){
 
 Matrix4 calculateOrthographicTransformation(Camera* camera){
     double matrix[4][4] = {
-        {2.0 / (camera->right - camera->left), 0.0, 0.0, -1.0 * (camera->right + camera->left) / (camera->right - camera->left)},
-        {0.0, 2.0 / (camera->top - camera->bottom), 0.0, -1.0 * (camera->top + camera->bottom) / (camera->top - camera->bottom)},
-        {0.0, 0.0, 2.0 / (camera->near - camera->far), -1.0 * (camera->near + camera->far) / (camera->near - camera->far)},
+        {(2.0 / (camera->right - camera->left)), 0.0, 0.0, -1.0 * ((camera->right + camera->left) / (camera->right - camera->left))},
+        {0.0, (2.0 / (camera->top - camera->bottom)), 0.0, -1.0 * ((camera->top + camera->bottom) / (camera->top - camera->bottom))},
+        {0.0, 0.0, (- (2.0 / (camera->far - camera->near))), -1.0 * ((camera->far + camera->near) / (camera->far - camera->near))},
         {0.0, 0.0, 0.0, 1.0}
     };
 
